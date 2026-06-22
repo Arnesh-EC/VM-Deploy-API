@@ -1,22 +1,30 @@
-# VM-Deploy-API
+# EC-PKI-Lab
 
-A FastAPI backend over the VM deployment libraries — the same `vmkit` / `configgen` / `isokit`
-that back the [VM-Setup-Scripts](https://github.com/Arnesh-EC/VM-Setup-Scripts) CLIs. The
-libraries are consumed as **versioned git dependencies** (see `pyproject.toml`
-`[tool.uv.sources]`) — this repo vendors no library source.
+A web console + FastAPI backend over the VM deployment libraries — the same
+`vmkit` / `configgen` / `isokit` that back the
+[VM-Setup-Scripts](https://github.com/Arnesh-EC/VM-Setup-Scripts) CLIs. The
+libraries are consumed as **versioned git dependencies** (see
+`backend/pyproject.toml` `[tool.uv.sources]`) — this repo vendors no library
+source.
 
-## Run
+## Layout
+
+```
+backend/    FastAPI app over vmkit / configgen / isokit (uv, Python ≥3.14)
+frontend/   React + Vite + TypeScript console (shadcn/ui, TanStack Query)
+```
+
+## Backend
 
 ```sh
-git clone git@github-ec:Arnesh-EC/VM-Deploy-API.git
-cd VM-Deploy-API
+cd backend
 uv sync                       # pulls fastapi + the three libs (from their git tags)
 uv run uvicorn app.main:app --reload
 ```
 
 Then open http://127.0.0.1:8000/docs.
 
-## Endpoints
+### Endpoints
 
 | Method | Path                 | Backed by | Notes                                              |
 |--------|----------------------|-----------|----------------------------------------------------|
@@ -33,7 +41,20 @@ curl -s -X POST localhost:8000/generate/hostname \
   -d '{"platform":"linux","hostname":"web01"}'
 ```
 
-## TODO (same libraries, more routes)
+## Frontend
+
+```sh
+cd frontend
+pnpm install
+pnpm dev                      # http://localhost:5173
+```
+
+The dev server proxies `/api/*` to the backend at `http://127.0.0.1:8000`
+(override with `VITE_API_TARGET`), so run the backend alongside it. Build with
+`pnpm build`, lint with `pnpm lint`.
+
+## TODO (same libraries, more routes + UI)
 - `POST /vm/clone`, `POST /vm/update` over `vmkit.clone_workflow` / `update_workflow`
   (needs ESXi connection params).
 - `POST /iso` over `isokit.build_script_iso` (accept the generated scripts, return the ISO).
+- Network-script form (the `/generate/network` route is wired in the API client already).

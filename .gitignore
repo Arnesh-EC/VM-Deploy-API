@@ -1,6 +1,19 @@
+# --- Python (backend/) ---
 __pycache__/
 *.pyc
 .venv/
-dist/
 *.egg-info/
 *.iso
+
+# --- Node / Vite (frontend/) ---
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# --- Env / editor ---
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
