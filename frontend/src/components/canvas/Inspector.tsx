@@ -160,12 +160,7 @@ export function Inspector() {
 
   if (!node) {
     return (
-      <aside className="flex w-64 shrink-0 flex-col items-center justify-center gap-2 border-l bg-sidebar p-4 text-muted-foreground text-sm">
-        <Settings className="h-6 w-6 opacity-30" />
-        <span className="text-xs text-center">
-          Click a node to inspect it, or drag a template from the toolbox.
-        </span>
-      </aside>
+      <aside className="flex w-0 shrink-0 flex-col overflow-hidden border-l-0 bg-sidebar transition-[width] duration-200 ease-in-out" />
     )
   }
 
@@ -215,7 +210,7 @@ export function Inspector() {
     (isConfigured && reconfiguring)
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col gap-0 border-l bg-sidebar overflow-y-auto">
+    <aside className="flex w-64 shrink-0 flex-col gap-0 overflow-x-hidden overflow-y-auto border-l bg-sidebar transition-[width] duration-200 ease-in-out">
       {/* Header */}
       <div className="flex items-center gap-2 border-b px-3 py-3">
         <Icon className={cn("h-4 w-4 shrink-0", def?.accent)} />
