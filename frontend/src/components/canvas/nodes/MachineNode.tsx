@@ -71,13 +71,16 @@ export function MachineNode({ id, data, selected }: NodeProps<Node<MachineData>>
         isOverlapping && "border-red-500 bg-red-500/40 opacity-70 ring-2 ring-red-500/40",
       )}
     >
-      {data.typeId === "certificateAuthority" && (
+      {data.typeId === "certificateAuthority" &&
+        data.status === NODE_STATUS.configured && (
         <>
-          <Handle
-            type="target"
-            position={Position.Left}
-            className="!h-3 !w-3 !bg-muted-foreground/50 !border-border"
-          />
+          {data.config?.caType !== "Root" && (
+            <Handle
+              type="target"
+              position={Position.Left}
+              className="!h-3 !w-3 !bg-muted-foreground/50 !border-border"
+            />
+          )}
           <Handle
             type="source"
             position={Position.Right}

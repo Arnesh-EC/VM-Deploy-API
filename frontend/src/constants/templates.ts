@@ -99,6 +99,13 @@ export const TEMPLATE_CATALOG: TemplateDef[] = [
     description: "AD CS",
     configFields: [
       {
+        key: "caType",
+        label: "Type",
+        type: "select",
+        options: ["Root", "Issuing"],
+        default: "Root",
+      },
+      {
         key: "commonName",
         label: "Common Name",
         type: "text",

@@ -402,6 +402,13 @@ export function canConnect(
     return { ok: false, reason: `"${target.data.name}" must be configured first.` }
   }
 
+  if (
+    source.data.typeId !== "certificateAuthority" ||
+    target.data.typeId !== "certificateAuthority"
+  ) {
+    return { ok: false, reason: "Only Certificate Authorities can be connected." }
+  }
+
   const edgeType = inferEdgeType(source.data.typeId, target.data.typeId)
 
   // Root CAs must not be domain-joined
