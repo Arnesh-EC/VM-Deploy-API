@@ -64,6 +64,9 @@ export function MachineNode({ id, data, selected }: NodeProps<Node<MachineData>>
         data.status === NODE_STATUS.unconfigured && "border-amber-500/40",
         data.status === NODE_STATUS.configuring && "border-muted",
         data.status === NODE_STATUS.configured && "border-border",
+        !isOverlapping && memberCount !== null && memberCount > 0 &&
+          "border-sky-500/60 shadow-[0_0_18px_4px_rgba(14,165,233,0.35)] " +
+          "dark:shadow-[0_0_20px_5px_rgba(56,189,248,0.55)]",
         // Overlap warning takes precedence over selection/status styling.
         isOverlapping && "border-red-500 bg-red-500/40 opacity-70 ring-2 ring-red-500/40",
       )}
