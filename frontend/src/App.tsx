@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { AUTH_MODES, QUERY_KEYS } from "@/constants"
@@ -37,12 +37,18 @@ function App() {
       ),
   })
 
-  // In guest mode, auto-connect once the mode is known and no session exists.
+  // In guest mode, always establish a fresh session on load. A persisted token
+  // may be stale: the backend's session store is in-process, so any restart
+  // wipes it while localStorage keeps the dead token. Trusting it would send a
+  // dead token with the first request (e.g. the standalone clone) and 401.
+  // Clear any persisted token first so the splash shows until reconnect lands.
+  const didInit = useRef(false)
   useEffect(() => {
-    if (meta?.mode === AUTH_MODES.guest && !token && autoConnect.isIdle) {
-      autoConnect.mutate()
-    }
-  }, [meta, token, autoConnect])
+    if (meta?.mode !== AUTH_MODES.guest || didInit.current) return
+    didInit.current = true
+    useAuthStore.getState().clear()
+    autoConnect.mutate()
+  }, [meta, autoConnect])
 
   if (modeLoading) return <Splash />
 
